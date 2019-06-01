@@ -8,16 +8,16 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="CENTER" prefHeight="363.0" prefWidth="319.0" spacing="20.0" styleClass="login-page" stylesheets="@../style/style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.chat.PrimaryController">
+<VBox alignment="CENTER" prefHeight="363.0" prefWidth="319.0" spacing="20.0" styleClass="login-page" stylesheets="@../style/style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.chat.controllers.LoginController">
    <children>
       <AnchorPane prefHeight="363.0" prefWidth="322.0">
          <children>
-            <TextField layoutX="56.0" layoutY="174.0" prefHeight="49.0" prefWidth="206.0" promptText="name" styleClass="login-page--field">
+            <TextField fx:id="nameField" layoutX="56.0" layoutY="174.0" onKeyPressed="#onEnterPressed" prefHeight="49.0" prefWidth="206.0" promptText="name" styleClass="login-page--field">
                <font>
                   <Font name="Roboto" size="18.0" />
                </font>
             </TextField>
-            <Button fx:id="primaryButton" layoutX="56.0" layoutY="250.0" onAction="#switchToSecondary" prefHeight="30.0" prefWidth="206.0" styleClass="login-page--button" text="Enter" />
+            <Button fx:id="primaryButton" layoutX="56.0" layoutY="250.0" onAction="#onEnterName" prefHeight="30.0" prefWidth="206.0" styleClass="login-page--button" text="Enter" />
             <ImageView fitHeight="87.0" fitWidth="87.0" layoutX="120.0" layoutY="70.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../imgs/user.png" />

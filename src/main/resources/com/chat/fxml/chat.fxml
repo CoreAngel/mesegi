@@ -4,9 +4,11 @@
 <?import javafx.scene.layout.VBox?>
 
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="456.0" prefWidth="621.0" styleClass="chat" stylesheets="@../style/style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="456.0" prefWidth="621.0" styleClass="chat" stylesheets="@../style/style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.chat.controllers.ChatController">
    <left>
-      <VBox prefHeight="456.0" prefWidth="170.0" styleClass="chat--users" BorderPane.alignment="CENTER" />
+      <VBox prefHeight="456.0" prefWidth="170.0" styleClass="chat--users" BorderPane.alignment="CENTER" >
+         <fx:include fx:id="users" source="user.fxml"/>
+      </VBox>
    </left>
    <center>
       <VBox prefHeight="200.0" prefWidth="100.0" styleClass="chat--messages" BorderPane.alignment="CENTER" />

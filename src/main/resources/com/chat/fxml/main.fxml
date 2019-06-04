@@ -20,7 +20,7 @@
       </AnchorPane>
    </center>
    <top>
-      <HBox BorderPane.alignment="CENTER" onMousePressed="#onPressed" onMouseDragged="#onDragged">
+      <HBox fx:id="menuBar" onMouseDragged="#onDragged" onMousePressed="#onPressed" BorderPane.alignment="CENTER">
          <children>
             <Label styleClass="main-title" text="Mesegi" textFill="WHITE" wrapText="true">
                <font>

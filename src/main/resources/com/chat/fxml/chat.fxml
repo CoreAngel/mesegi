@@ -1,16 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
 
-
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="456.0" prefWidth="621.0" styleClass="chat" stylesheets="@../style/style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.chat.controllers.ChatController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="800.0" styleClass="chat" stylesheets="@../style/style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.chat.controllers.ChatController">
    <left>
-      <VBox prefHeight="456.0" prefWidth="170.0" styleClass="chat--users" BorderPane.alignment="CENTER" >
-         <fx:include fx:id="users" source="user.fxml"/>
-      </VBox>
+      <ScrollPane prefWidth="200.0" styleClass="chat--users" stylesheets="@../style/style.css" BorderPane.alignment="CENTER">
+         <content>
+            <VBox prefWidth="183.0" styleClass="chat--users" stylesheets="@../style/style.css">
+               <fx:include fx:id="users" source="user.fxml" />
+            </VBox>
+         </content>
+      </ScrollPane>
    </left>
    <center>
-      <VBox prefHeight="200.0" prefWidth="100.0" styleClass="chat--messages" BorderPane.alignment="CENTER" />
+      <ScrollPane prefHeight="500.0" prefWidth="582.0" styleClass="chat--messages" stylesheets="@../style/style.css" BorderPane.alignment="CENTER">
+         <content>
+            <VBox prefWidth="567.0" styleClass="chat--messages" stylesheets="@../style/style.css" />
+         </content>
+         <padding>
+            <Insets bottom="15.0" left="15.0" top="15.0" />
+         </padding>
+      </ScrollPane>
    </center>
 </BorderPane>

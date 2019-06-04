@@ -24,7 +24,6 @@ public class LoginController {
     @FXML
     public void onEnterName() throws IOException {
         if (checkName(stringProperty.getValue())) {
-            System.out.println("dsfsd");
             this.parentController.switchToChat();
         }
     }

@@ -8,6 +8,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.scene.input.MouseEvent;
@@ -16,6 +17,8 @@ public class MainController {
 
     @FXML
     private VBox mainInclude;
+    @FXML
+    private HBox menuBar;
     private LoginController loginController;
     private double x = 0;
     private double y = 0;
@@ -25,7 +28,7 @@ public class MainController {
         mainInclude.getChildren().clear();
         BorderPane borderPane = App.loadFXML("fxml/chat").load();
         mainInclude.getChildren().add(borderPane);
-        App.setSize(borderPane.getPrefWidth(), borderPane.getPrefHeight());
+        App.setSize(borderPane.getPrefWidth(), borderPane.getPrefHeight() + menuBar.getHeight());
     }
 
     @FXML

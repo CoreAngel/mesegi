@@ -1,9 +1,11 @@
 package com.chat;
 
+import com.chat.client.ClientWindow;
+
 public class Main {
 
     public static void main(String[] args) {
-        App.main(args);
+        ClientWindow.run();
     }
 
 }

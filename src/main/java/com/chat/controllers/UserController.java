@@ -7,6 +7,6 @@ public class UserController {
 
     @FXML
     private void switchToSecondary() throws IOException {
-        //App.setRoot("fxml/register");
+        //ClientWindow.setRoot("fxml/register");
     }
 }

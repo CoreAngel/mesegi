@@ -1,4 +1,4 @@
-package com.chat;
+package com.chat.client;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -10,26 +10,26 @@ import java.io.IOException;
 
 
 
-public class App extends Application {
+public class ClientWindow extends Application {
 
     private static Scene scene;
     private static Stage stage;
 
     @Override
     public void start(Stage stage) throws IOException {
-        scene = new Scene(loadFXML("fxml/main").load());
-        App.stage = stage;
+        ClientWindow.stage = stage;
+        scene = new Scene(ClientWindow.loadFXML("fxml/main").load());
         stage.setScene(scene);
         stage.initStyle(StageStyle.TRANSPARENT);
         stage.show();
     }
 
     public static void setRoot(String fxml) throws IOException {
-        scene.setRoot(loadFXML(fxml).load());
+        scene.setRoot(ClientWindow.loadFXML(fxml).load());
     }
 
     public static FXMLLoader loadFXML(String fxml) {
-        return new FXMLLoader(App.class.getResource(fxml + ".fxml"));
+        return new FXMLLoader(ClientWindow.class.getResource(fxml + ".fxml"));
     }
 
     public static void setSize(double width, double height) {
@@ -38,10 +38,10 @@ public class App extends Application {
     }
 
     public static Stage getStage() {
-        return App.stage;
+        return ClientWindow.stage;
     }
 
-    public static void main(String[] args) {
+    public static void run() {
         launch();
     }
 

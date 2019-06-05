@@ -2,7 +2,7 @@ package com.chat.controllers;
 
 import java.io.IOException;
 
-import com.chat.App;
+import com.chat.client.ClientWindow;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -26,9 +26,9 @@ public class MainController {
     @FXML
     public void switchToChat() throws IOException {
         mainInclude.getChildren().clear();
-        BorderPane borderPane = App.loadFXML("fxml/chat").load();
+        BorderPane borderPane = ClientWindow.loadFXML("fxml/chat").load();
         mainInclude.getChildren().add(borderPane);
-        App.setSize(borderPane.getPrefWidth(), borderPane.getPrefHeight() + menuBar.getHeight());
+        ClientWindow.setSize(borderPane.getPrefWidth(), borderPane.getPrefHeight() + menuBar.getHeight());
     }
 
     @FXML
@@ -38,7 +38,7 @@ public class MainController {
 
     @FXML
     void minimaliseProgram() {
-        App.getStage().setIconified(true);
+        ClientWindow.getStage().setIconified(true);
     }
 
     @FXML
@@ -57,7 +57,7 @@ public class MainController {
 
     @FXML
     public void initialize() throws IOException {
-        FXMLLoader loader = App.loadFXML("fxml/login");
+        FXMLLoader loader = ClientWindow.loadFXML("fxml/login");
         mainInclude.getChildren().add(loader.load());
         loginController = loader.getController();
         loginController.setParentController(this);

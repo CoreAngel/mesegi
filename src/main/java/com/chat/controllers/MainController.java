@@ -2,6 +2,7 @@ package com.chat.controllers;
 
 import java.io.IOException;
 
+import com.chat.client.Client;
 import com.chat.client.ClientWindow;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -14,6 +15,8 @@ import javafx.stage.Stage;
 import javafx.scene.input.MouseEvent;
 
 public class MainController {
+
+    private Client client;
 
     @FXML
     private VBox mainInclude;
@@ -61,5 +64,7 @@ public class MainController {
         mainInclude.getChildren().add(loader.load());
         loginController = loader.getController();
         loginController.setParentController(this);
+
+        this.client = new Client("localhost", 58395);
     }
 }

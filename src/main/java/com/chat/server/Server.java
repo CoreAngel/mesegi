@@ -1,88 +1,44 @@
 package com.chat.server;
 
-import com.chat.message.type.Controller;
-import com.chat.message.type.Types;
-
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.InetAddress;
+import java.net.ServerSocket;
 import java.util.ArrayList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class Server {
 
-    private DatagramSocket socket;
-    private boolean running;
+    private boolean running = true;
     private long clientID = 0;
+    private int port;
+    private int maxClients;
+
+    private static final int MAX_CLINTS = 500;
 
     private ArrayList<ClientInfo> clients = new ArrayList<>();
+    private ExecutorService pool;
+
+    public Server(int port) {
+        this(port, MAX_CLINTS);
+    }
+
+    public Server(int port, int maxClients) {
+        this.port = port;
+        this.maxClients = maxClients;
+    }
 
 
-    public void start(int port) {
+    public void start() {
+        System.out.println("The chat server is running...");
+        pool = Executors.newFixedThreadPool(maxClients);
         try {
-            socket = new DatagramSocket(port);
-            running = true;
-
-            listen();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void broadcast(String message) {
-        for (ClientInfo client : clients) {
-            send(message, client.getAddresss(), client.getPort());
-        }
-    }
-
-    public void send(String message, InetAddress address, int port) {
-        try {
-            message += "\\e";
-            byte[] data = message.getBytes();
-            DatagramPacket packet = new DatagramPacket(data, data.length, address, port);
-            socket.send(packet);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void listen() {
-        Thread listener = new Thread(() -> {
-            try {
-                while (running) {
-                    byte[] data = new byte[1024];
-                    DatagramPacket packet = new DatagramPacket(data, data.length);
-                    socket.receive(packet);
-
-                    String message = new String(data);
-                    message = message.substring(0, message.indexOf("\\e"));
-
-                    Types type = Controller.getType(message);
-                    if (Controller.isCommand(type)) {
-                        executeCommand(type, message, packet);
-                    } else if (Controller.isMessage(type)) {
-                        broadcast(message);
-                    }
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
+            ServerSocket listener = new ServerSocket(port);
+            while(running) {
+                pool.execute(new ThreadHandler(listener.accept(), clientID++, clients));
             }
-        });
-        listener.start();
+        } catch (Exception e) {
+            e.printStackTrace();
 
-    }
-
-    public void stop() {
-        running = false;
-    }
-
-    private void executeCommand(Types type, String command, DatagramPacket packet) {
-        if (type == Types.CONNECT) {
-            command = command.substring(command.indexOf(":")+1);
-            String name = command.strip();
-            clients.add(new ClientInfo(name, clientID++, packet.getAddress(), packet.getPort()));
         }
     }
-
 
 }

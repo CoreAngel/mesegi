@@ -1,19 +1,20 @@
 package com.chat.server;
 
-import java.net.InetAddress;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 
 public class ClientInfo {
 
     private String name;
     private long id;
-    private InetAddress address;
-    private int port;
+    private ObjectInputStream inputStream;
+    private ObjectOutputStream outputStream;
 
-    public ClientInfo(String name, long id, InetAddress address, int port) {
+    public ClientInfo(String name, long id, ObjectInputStream in, ObjectOutputStream out) {
         this.name = name;
         this.id = id;
-        this.address = address;
-        this.port = port;
+        this.inputStream = in;
+        this.outputStream = out;
     }
 
     public String getName() {
@@ -24,12 +25,12 @@ public class ClientInfo {
         return id;
     }
 
-    public InetAddress getAddresss() {
-        return address;
+    public ObjectInputStream getInputStream() {
+        return inputStream;
     }
 
-    public int getPort() {
-        return port;
+    public ObjectOutputStream getOutputStream() {
+        return outputStream;
     }
 
 }

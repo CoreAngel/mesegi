@@ -22,14 +22,17 @@ public class MainController {
     private VBox mainInclude;
     @FXML
     private HBox menuBar;
-    private LoginController loginController;
     private double x = 0;
     private double y = 0;
+
+    private final FXMLLoader loginLoader = ClientWindow.loadFXML("fxml/login");
+    private final FXMLLoader chatLoader = ClientWindow.loadFXML("fxml/chat");
 
     @FXML
     public void switchToChat() throws IOException {
         mainInclude.getChildren().clear();
-        BorderPane borderPane = ClientWindow.loadFXML("fxml/chat").load();
+        this.client.setChatController(chatLoader.getController());
+        BorderPane borderPane = chatLoader.load();
         mainInclude.getChildren().add(borderPane);
         ClientWindow.setSize(borderPane.getPrefWidth(), borderPane.getPrefHeight() + menuBar.getHeight());
     }
@@ -60,11 +63,10 @@ public class MainController {
 
     @FXML
     public void initialize() throws IOException {
-        FXMLLoader loader = ClientWindow.loadFXML("fxml/login");
-        mainInclude.getChildren().add(loader.load());
-        loginController = loader.getController();
+        mainInclude.getChildren().add(loginLoader.load());
+        LoginController loginController = loginLoader.getController();
         loginController.setParentController(this);
 
-        this.client = new Client("localhost", 58395);
+        this.client = new Client("localhost", 58395, chatLoader.getController());
     }
 }

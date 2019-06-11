@@ -30,10 +30,10 @@ public class MainController {
 
     @FXML
     public void switchToChat() throws IOException {
-        mainInclude.getChildren().clear();
-        this.client.setChatController(chatLoader.getController());
+        Platform.runLater(() -> mainInclude.getChildren().clear());
         BorderPane borderPane = chatLoader.load();
-        mainInclude.getChildren().add(borderPane);
+        Platform.runLater(() -> mainInclude.getChildren().add(borderPane));
+        ((ChatController)chatLoader.getController()).setClient(client);
         ClientWindow.setSize(borderPane.getPrefWidth(), borderPane.getPrefHeight() + menuBar.getHeight());
     }
 
@@ -67,6 +67,19 @@ public class MainController {
         LoginController loginController = loginLoader.getController();
         loginController.setParentController(this);
 
-        this.client = new Client("localhost", 58395, chatLoader.getController());
+        this.client = new Client("localhost", 58395, this);
     }
+
+    public LoginController getLoginControler() {
+        return loginLoader.getController();
+    }
+
+    public ChatController getChatController() {
+        return chatLoader.getController();
+    }
+
+    public Client getClient() {
+        return client;
+    }
+
 }

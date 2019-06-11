@@ -1,15 +1,16 @@
 package com.chat.server;
 
 import com.chat.message.NetMessage;
-import com.chat.message.type.NewClient;
-import com.chat.message.type.NewUser;
-import com.chat.message.type.UserLeft;
+import com.chat.message.type.*;
+import javafx.util.Pair;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.TreeMap;
 
 public class ThreadHandler implements Runnable {
     private Socket socket;
@@ -29,14 +30,13 @@ public class ThreadHandler implements Runnable {
             ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
 
             client = waitForNameFromClient(out, in);
-            NewUser user = new NewUser(client.getName(), client.getID());
-
-            for (ClientInfo clientInfo : clients) {
-                clientInfo.getOutputStream().writeObject(user);
-            }
 
             while(true) {
                 NetMessage message = (NetMessage) in.readObject();
+
+                if(message instanceof TextMessage) {
+                    ((TextMessage) message).setDate(new Date());
+                }
 
                 for (ClientInfo clientInfo : clients) {
                     clientInfo.getOutputStream().writeObject(message);
@@ -76,8 +76,21 @@ public class ThreadHandler implements Runnable {
             }
             NewClient message = (NewClient)msg;
             ClientInfo client = new ClientInfo(message.getName(), id, in, out);
+
+            TreeMap<Long, String> list = new TreeMap<>();
+            for (ClientInfo clientInfo : clients) {
+                list.put(clientInfo.getID(), clientInfo.getName());
+            }
+            EnterNewUser enterNewUser = new EnterNewUser(client.getName(), client.getID(), list);
+            client.getOutputStream().writeObject(enterNewUser);
+
+            NewUser user = new NewUser(client.getName(), client.getID());
+            for (ClientInfo clientInfo : clients) {
+                clientInfo.getOutputStream().writeObject(user);
+            }
+
             clients.add(client);
-            System.out.println(message.getName() + " join");
+            System.out.println(client.getID() + ": " + client.getName() + " - join");
             return client;
         }
     }

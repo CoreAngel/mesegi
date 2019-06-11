@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.text.TextFlow?>
+
+
+<HBox fx:id="msgContainer" alignment="TOP_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="560.0" styleClass="chat--message" stylesheets="@../style/style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <VBox fx:id="elementContainer" maxWidth="300.0">
+         <children>
+            <TextFlow fx:id="textFlowUser" styleClass="chat--message--user" textAlignment="RIGHT">
+               <children>
+                  <Text fx:id="textUser" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="chat--message--user" text="Text" textAlignment="RIGHT" />
+               </children>
+               <VBox.margin>
+                  <Insets bottom="5.0" right="20.0" />
+               </VBox.margin>
+            </TextFlow>
+            <TextFlow fx:id="textFlowMsg" styleClass="chat--text-message--my" stylesheets="@../style/style.css" textAlignment="RIGHT">
+               <children>
+                  <Text fx:id="textMsg" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="chat--text" text="Text" textAlignment="RIGHT" />
+               </children>
+               <padding>
+                  <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
+               </padding>
+            </TextFlow>
+            <TextFlow fx:id="textFlowDate" textAlignment="RIGHT">
+               <children>
+                  <Text fx:id="textDate" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="chat--message--date" text="Text" textAlignment="RIGHT" />
+               </children>
+               <VBox.margin>
+                  <Insets right="20.0" top="5.0" />
+               </VBox.margin>
+            </TextFlow>
+         </children>
+         <HBox.margin>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </HBox.margin>
+      </VBox>
+   </children>
+   <opaqueInsets>
+      <Insets />
+   </opaqueInsets>
+</HBox>

@@ -1,6 +1,6 @@
 package com.chat.client;
 
-import com.chat.controllers.ChatController;
+import com.chat.controllers.MainController;
 import com.chat.message.NetMessage;
 
 import java.io.ObjectInputStream;
@@ -14,7 +14,7 @@ public class Client {
     private InetAddress address;
     private int port;
 
-    private ChatController chatController;
+    private MainController mainController;
 
     private ObjectInputStream inputStream;
     private ObjectOutputStream outputStream;
@@ -22,16 +22,16 @@ public class Client {
     private Thread listener;
     private Thread pingService;
 
-    public Client(String address, int port, ChatController controller) {
+    public Client(String address, int port, MainController controller) {
         try {
             this.address = InetAddress.getByName(address);
             this.port = port;
             this.socket = new Socket(address, port);
             this.outputStream = new ObjectOutputStream(socket.getOutputStream());
             this.inputStream = new ObjectInputStream(socket.getInputStream());
-            this.chatController = controller;
+            this.mainController = controller;
 
-            ClientListener clientListener = new ClientListener(inputStream, chatController);
+            ClientListener clientListener = new ClientListener(inputStream, mainController);
             this.listener = new Thread(clientListener);
             this.listener.start();
             PingService pingService = new PingService(outputStream);
@@ -43,10 +43,6 @@ public class Client {
             e.printStackTrace();
         }
 
-    }
-
-    public void setChatController(ChatController controller) {
-        this.chatController = controller;
     }
 
     public void send(NetMessage message) {

@@ -1,6 +1,6 @@
 package com.chat.client;
 
-import com.chat.controllers.ChatController;
+import com.chat.controllers.MainController;
 import com.chat.message.NetMessage;
 
 import java.io.ObjectInputStream;
@@ -8,9 +8,9 @@ import java.io.ObjectInputStream;
 public class ClientListener implements Runnable {
 
     private ObjectInputStream inputStream;
-    private ChatController controller;
+    private MainController controller;
 
-    public ClientListener(ObjectInputStream inputStream, ChatController controller) {
+    public ClientListener(ObjectInputStream inputStream, MainController controller) {
         this.inputStream = inputStream;
         this.controller = controller;
     }

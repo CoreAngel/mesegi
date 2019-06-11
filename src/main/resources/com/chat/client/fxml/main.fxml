@@ -32,7 +32,7 @@
             </Label>
             <HBox alignment="CENTER_RIGHT" HBox.hgrow="ALWAYS">
                <children>
-                  <ImageView accessibleRole="BUTTON" fitHeight="20.0" fitWidth="444.0" onMousePressed="#minimaliseProgram" pickOnBounds="true" preserveRatio="true">
+                  <ImageView accessibleRole="BUTTON" fitHeight="20.0" fitWidth="444.0" onMouseReleased="#minimaliseProgram" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../imgs/minim.png" />
                      </image>
@@ -43,7 +43,7 @@
                         <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                      </HBox.margin>
                   </ImageView>
-                  <ImageView accessibleRole="BUTTON" fitHeight="20.0" fitWidth="444.0" layoutX="10.0" layoutY="10.0" onMousePressed="#closeProgram" pickOnBounds="true" preserveRatio="true">
+                  <ImageView accessibleRole="BUTTON" fitHeight="20.0" fitWidth="444.0" layoutX="10.0" layoutY="10.0" onMouseReleased="#closeProgram" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../imgs/close.png" />
                      </image>

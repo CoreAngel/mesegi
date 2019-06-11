@@ -51,6 +51,25 @@
     -fx-background-color: #2F2B43;
 }
 
+.chat--enter-msg {
+    -fx-font-family: 'Roboto';
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-background-color: transparent;
+    -fx-border-width: 0 0 2px 0;
+    -fx-border-color: white;
+    -fx-prompt-text-fill: rgba(255, 255,255, 0.4);
+}
+
+.chat--send-button {
+    -fx-border-radius: 0;
+    -fx-background-color: #524A7B;
+    -fx-text-fill: white;
+    -fx-font-family: 'Roboto Black';
+    -fx-font-size: 16px;
+    -fx-cursor: HAND;
+}
+
 .chat--users {
     -fx-background-color: transparent;
 }
@@ -77,6 +96,52 @@
     -fx-font-weight: bold;
     -fx-font-size: 18px;
     -fx-text-fill: white;
+}
+
+.chat--message--user {
+    -fx-font-family: 'Roboto';
+    -fx-font-style: italic;
+    -fx-font-weight: bold;
+    -fx-font-size: 12px;
+    -fx-fill: #ffffff;
+}
+
+.chat--message--date {
+    -fx-font-family: 'Roboto';
+    -fx-font-style: italic;
+    -fx-font-weight: bold;
+    -fx-font-size: 12px;
+    -fx-fill: #a5a5a5;
+}
+
+.chat--message {
+    -fx-background-color: transparent;
+}
+
+.chat--text-message--my {
+    -fx-background-color: #4431b1;
+    -fx-background-radius: 13 13 13 13;
+}
+
+.chat--text-message--my .chat--text {
+    -fx-font-family: 'Roboto';
+    -fx-font-style: italic;
+    -fx-font-weight: bold;
+    -fx-font-size: 12px;
+    -fx-fill: #ffffff;
+}
+
+.chat--text-message--their {
+    -fx-background-color: #58536F;
+    -fx-background-radius: 13 13 13 13;
+}
+
+.chat--text-message--their .chat--text {
+    -fx-font-family: 'Roboto';
+    -fx-font-style: italic;
+    -fx-font-weight: bold;
+    -fx-font-size: 12px;
+    -fx-fill: #ffffff;
 }
 
 .scroll-bar {

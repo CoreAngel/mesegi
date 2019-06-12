@@ -38,7 +38,9 @@ public class MainController {
     }
 
     @FXML
-    void closeProgram() {
+    public void closeProgram() {
+        client.setRunning(false);
+        client.closeThreads();
         Platform.exit();
     }
 

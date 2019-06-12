@@ -39,6 +39,7 @@ public class PingService implements Runnable {
 
     private void closeStream() {
         try {
+            outputStream.flush();
             outputStream.close();
         } catch (Exception ex){
             //ignore

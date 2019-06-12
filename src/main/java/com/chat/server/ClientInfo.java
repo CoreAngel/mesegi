@@ -2,6 +2,7 @@ package com.chat.server;
 
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.Date;
 
 public class ClientInfo {
 
@@ -9,6 +10,7 @@ public class ClientInfo {
     private long id;
     private ObjectInputStream inputStream;
     private ObjectOutputStream outputStream;
+    private Date lastPing = new Date();
 
     public ClientInfo(String name, long id, ObjectInputStream in, ObjectOutputStream out) {
         this.name = name;
@@ -33,4 +35,11 @@ public class ClientInfo {
         return outputStream;
     }
 
+    public Date getLastPing() {
+        return lastPing;
+    }
+
+    public void setLastPing(Date lastPing) {
+        this.lastPing = lastPing;
+    }
 }

@@ -2,7 +2,6 @@ package com.chat.server;
 
 import com.chat.message.NetMessage;
 import com.chat.message.type.*;
-import javafx.util.Pair;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -11,12 +10,15 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.TreeMap;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ThreadHandler implements Runnable {
     private Socket socket;
     private ArrayList<ClientInfo> clients;
     private ClientInfo client;
     private long id;
+
+    private AtomicBoolean running = new AtomicBoolean(true);
 
     public ThreadHandler(Socket socket, long id, ArrayList<ClientInfo> clients) {
         this.socket = socket;
@@ -25,40 +27,42 @@ public class ThreadHandler implements Runnable {
     }
 
     public void run() {
+        ObjectOutputStream out;
+        ObjectInputStream in;
+
         try {
-            ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
-            ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
+            out = new ObjectOutputStream(socket.getOutputStream());
+            in = new ObjectInputStream(socket.getInputStream());
 
             client = waitForNameFromClient(out, in);
 
-            while(true) {
+            while(running.get()) {
                 NetMessage message = (NetMessage) in.readObject();
 
-                if(message instanceof TextMessage) {
+                if (message instanceof TextMessage) {
                     ((TextMessage) message).setDate(new Date());
                 }
 
-                for (ClientInfo clientInfo : clients) {
-                    clientInfo.getOutputStream().writeObject(message);
+                if (!(message instanceof Ping)) {
+                    for (ClientInfo clientInfo : clients) {
+                        try {
+                            clientInfo.getOutputStream().writeObject(message);
+                        } catch (IOException e) {
+                            //ignore
+                        }
+                    }
+                } else {
+                    client.setLastPing(new Date());
                 }
+
+                System.out.println(clients.size());
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (IOException e) {
+            return;
+        } catch (ClassNotFoundException e) {
+            //ignore
         } finally {
-            if (client.getOutputStream() != null) {
-                clients.remove(client);
-            }
-
-            UserLeft message = new UserLeft(client.getID());
-            try {
-                for (ClientInfo clientInfo : clients) {
-                    clientInfo.getOutputStream().writeObject(message);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            client = null;
+            removeClient();
 
             try {
                 socket.close();
@@ -92,6 +96,23 @@ public class ThreadHandler implements Runnable {
             clients.add(client);
             System.out.println(client.getID() + ": " + client.getName() + " - join");
             return client;
+        }
+    }
+
+    private void removeClient() {
+        if (client != null) {
+            clients.remove(client);
+
+            UserLeft message = new UserLeft(client.getID());
+            try {
+                for (ClientInfo clientInfo : clients) {
+                    clientInfo.getOutputStream().writeObject(message);
+                }
+            } catch (Exception e) {
+                //ignore
+            }
+
+            client = null;
         }
     }
 }

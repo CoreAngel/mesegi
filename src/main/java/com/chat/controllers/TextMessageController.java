@@ -80,7 +80,7 @@ public class TextMessageController {
         if (type == MsgType.OUR) {
             msgContainer.setAlignment(Pos.TOP_RIGHT);
             elementContainer.getChildren().remove(textFlowUser);
-            textFlowMsg.setTextAlignment(TextAlignment.RIGHT);
+            textFlowMsg.setTextAlignment(TextAlignment.LEFT);
             textFlowMsg.getStyleClass().clear();
             textFlowMsg.getStyleClass().add("chat--text-message--my");
             textFlowDate.setTextAlignment(TextAlignment.RIGHT);

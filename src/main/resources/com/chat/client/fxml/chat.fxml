@@ -19,9 +19,9 @@
    <center>
       <AnchorPane prefHeight="500.0" prefWidth="600.0" BorderPane.alignment="CENTER">
          <children>
-            <ScrollPane prefHeight="468.0" prefWidth="600.0" styleClass="chat--messages" stylesheets="@../style/style.css">
+            <ScrollPane fx:id="scrollContainer" prefHeight="468.0" prefWidth="600.0" styleClass="chat--messages" stylesheets="@../style/style.css">
                <content>
-                  <VBox fx:id="messagesContainer" prefWidth="567.0" styleClass="chat--messages" stylesheets="@../style/style.css" />
+                  <VBox fx:id="messagesContainer" onScroll="#onScrollMsgContainer" prefWidth="567.0" styleClass="chat--messages" stylesheets="@../style/style.css" />
                </content>
                <padding>
                   <Insets bottom="15.0" left="15.0" top="15.0" />

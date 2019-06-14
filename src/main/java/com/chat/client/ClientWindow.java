@@ -9,23 +9,17 @@ import javafx.stage.StageStyle;
 import java.io.IOException;
 
 
-
 public class ClientWindow extends Application {
 
-    private static Scene scene;
     private static Stage stage;
 
     @Override
     public void start(Stage stage) throws IOException {
         ClientWindow.stage = stage;
-        scene = new Scene(ClientWindow.loadFXML("fxml/main").load());
+        Scene scene = new Scene(ClientWindow.loadFXML("fxml/main").load());
         stage.setScene(scene);
         stage.initStyle(StageStyle.TRANSPARENT);
         stage.show();
-    }
-
-    public static void setRoot(String fxml) throws IOException {
-        scene.setRoot(ClientWindow.loadFXML(fxml).load());
     }
 
     public static FXMLLoader loadFXML(String fxml) {

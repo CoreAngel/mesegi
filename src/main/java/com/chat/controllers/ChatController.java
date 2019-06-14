@@ -7,9 +7,11 @@ import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
@@ -21,16 +23,19 @@ public class ChatController {
 
     private long id;
     private String name;
-    private TreeMap<Long, String> users = new TreeMap<>();
     private Client client;
+    private TreeMap<Long, String> users = new TreeMap<>();
     private final SimpleStringProperty stringProperty = new SimpleStringProperty();
 
+    private double currentScroll = 1.0;
     @FXML
     private TextField messageField;
     @FXML
     private VBox usersContainer;
     @FXML
     private VBox messagesContainer;
+    @FXML
+    private ScrollPane scrollContainer;
 
 
     public void setUserData(long id, String name, TreeMap<Long, String> list) {
@@ -87,7 +92,6 @@ public class ChatController {
                 e.printStackTrace();
             }
         });
-
     }
 
     @FXML
@@ -104,14 +108,25 @@ public class ChatController {
         }
     }
 
+    @FXML
+    public void onScrollMsgContainer(ScrollEvent e) {
+        currentScroll = scrollContainer.getVvalue();
+    }
+
     private void sendTextMessage() {
         TextMessage msg = new TextMessage(name, id, stringProperty.getValue());
-        client.send(msg);
+        client.trySendMessage(msg);
         stringProperty.setValue("");
     }
 
     @FXML
     public void initialize() {
         messageField.textProperty().bindBidirectional(stringProperty);
+        messagesContainer.heightProperty().addListener((observable) -> {
+            if(currentScroll == 1.00) {
+                scrollContainer.setVvalue(1.0);
+            }
+
+        });
     }
 }

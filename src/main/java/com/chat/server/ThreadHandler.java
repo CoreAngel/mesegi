@@ -44,23 +44,13 @@ public class ThreadHandler implements Runnable {
                 }
 
                 if (!(message instanceof Ping)) {
-                    for (ClientInfo clientInfo : clients) {
-                        try {
-                            clientInfo.getOutputStream().writeObject(message);
-                        } catch (IOException e) {
-                            //ignore
-                        }
-                    }
+                    broadcastMessage(message);
                 } else {
                     client.setLastPing(new Date());
                 }
-
-                System.out.println(clients.size());
             }
-        } catch (IOException e) {
-            return;
-        } catch (ClassNotFoundException e) {
-            //ignore
+        } catch (IOException | ClassNotFoundException e) {
+            //finish
         } finally {
             removeClient();
 
@@ -86,17 +76,36 @@ public class ThreadHandler implements Runnable {
                 list.put(clientInfo.getID(), clientInfo.getName());
             }
             EnterNewUser enterNewUser = new EnterNewUser(client.getName(), client.getID(), list);
-            client.getOutputStream().writeObject(enterNewUser);
+            trySendMessage(client, enterNewUser);
 
             NewUser user = new NewUser(client.getName(), client.getID());
-            for (ClientInfo clientInfo : clients) {
-                clientInfo.getOutputStream().writeObject(user);
-            }
+            broadcastMessage(user);
 
             clients.add(client);
             System.out.println(client.getID() + ": " + client.getName() + " - join");
             return client;
         }
+    }
+
+    private void broadcastMessage(NetMessage msg) {
+        for (ClientInfo client : clients) {
+            trySendMessage(client, msg);
+        }
+    }
+
+    private boolean trySendMessage(ClientInfo client, NetMessage msg) {
+        boolean sended = false;
+
+        for (int i = 0; i < 10; i++) {
+            try {
+                client.getOutputStream().writeObject(msg);
+                sended = true;
+                break;
+            } catch (IOException e) {
+                //ignore
+            }
+        }
+        return sended;
     }
 
     private void removeClient() {

@@ -32,13 +32,11 @@ public class ClientListener implements Runnable {
                 System.out.println("ClientListener: InterruptedIOException");
                 closeStream();
                 return;
-            }
-            catch (SocketException e) {
+            } catch (SocketException e) {
                 System.out.println("ClientListener: Socket");
                 closeStream();
                 return;
-            }
-            catch (IOException e) {
+            } catch (IOException e) {
                 System.out.println("ClientListener: IOException");
                 closeStream();
                 controller.closeProgram();
@@ -51,7 +49,7 @@ public class ClientListener implements Runnable {
     private void closeStream() {
         try {
             inputStream.close();
-        } catch (Exception ex){
+        } catch (IOException ex){
             //ignore
         }
     }

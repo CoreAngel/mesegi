@@ -2,8 +2,8 @@ package com.chat.client;
 
 import com.chat.controllers.MainController;
 import com.chat.message.NetMessage;
-import javafx.application.Platform;
 
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.InetAddress;
@@ -36,33 +36,40 @@ public class Client {
             this.outputStream = new ObjectOutputStream(socket.getOutputStream());
             this.inputStream = new ObjectInputStream(socket.getInputStream());
 
-            ClientListener clientListener = new ClientListener(inputStream, mainController, running);
-            this.listener = new Thread(clientListener);
-            this.listener.start();
-            PingService pingService = new PingService(outputStream, running);
-            this.pingService = new Thread(pingService);
-            this.pingService.start();
+            listener = createListenerThread();
+            listener.start();
+            pingService = createPingThread();
+            pingService.start();
 
             Runtime.getRuntime().addShutdownHook(new Thread(controller::closeProgram));
-
         } catch (Exception e) {
             System.out.println("Client error");
-            e.printStackTrace();
             mainController.closeProgram();
+            e.printStackTrace();
         }
 
     }
 
-    public void send(NetMessage message) {
+    private Thread createListenerThread() {
+        ClientListener clientListener = new ClientListener(inputStream, mainController, running);
+        return new Thread(clientListener);
+    }
+
+    private Thread createPingThread() {
+        PingService pingService = new PingService(outputStream, running);
+        return new Thread(pingService);
+    }
+
+    public void trySendMessage(NetMessage message) {
         boolean error = true;
 
         for(int i = 0; i < 10; i++) {
             try {
-                outputStream.writeObject(message);
+                send(message);
                 error = false;
                 break;
-            } catch (Exception e) {
-                System.out.println("Error in send method");
+            } catch (IOException e) {
+                System.out.println("Error in trySendMessage method");
                 e.printStackTrace();
             }
         }
@@ -73,11 +80,11 @@ public class Client {
 
     }
 
-    public void setRunning(boolean flag) {
-        running.set(flag);
+    private void send(NetMessage message) throws IOException {
+        outputStream.writeObject(message);
     }
 
-    public void closeThreads() {
+    public void interruptThreads() {
         if(!listener.isInterrupted()) {
             System.out.println("close listener");
             listener.interrupt();
@@ -86,6 +93,10 @@ public class Client {
             System.out.println("close ping");
             pingService.interrupt();
         }
+    }
+
+    public void setRunning(boolean flag) {
+        running.set(flag);
     }
 
 }

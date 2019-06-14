@@ -18,9 +18,8 @@ public class LastPingChecker implements Runnable {
 
     @Override
     public void run() {
-        try {
-            while (running.get()) {
-
+        while (running.get()) {
+            try {
                 long nowInSec = (new Date()).getTime() / 1000;
 
                 for (ClientInfo client : clients) {
@@ -31,9 +30,9 @@ public class LastPingChecker implements Runnable {
                 }
 
                 Thread.sleep(10000);
+            } catch (InterruptedException e) {
+                return;
             }
-        } catch (InterruptedException e) {
-            return;
         }
     }
 

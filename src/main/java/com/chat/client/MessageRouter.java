@@ -34,9 +34,9 @@ public class MessageRouter {
             chatController.removeUser(newUser.getID());
             chatController.renderUserList();
         }
+
         if(msg instanceof TextMessage) {
             TextMessage textMessage = (TextMessage) msg;
-
             ChatController chatController = controller.getChatController();
             chatController.addMessage(textMessage.getUserID(), textMessage.getUserName(), textMessage.getText(), textMessage.getDate());
         }

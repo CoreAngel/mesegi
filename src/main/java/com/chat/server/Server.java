@@ -6,13 +6,15 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicLong;
 
 public class Server {
 
-    private AtomicBoolean running = new AtomicBoolean(true);
-    private long clientID = 0;
     private int port;
     private int maxClients;
+
+    private final AtomicLong nextClientID =  new AtomicLong(0);
+    private AtomicBoolean running = new AtomicBoolean(true);
 
     private Thread pingChecker;
 
@@ -34,7 +36,7 @@ public class Server {
     public void start() {
         System.out.println("The chat server is running...");
 
-        pingChecker = new Thread(new LastPingChecker(clients, running));
+        pingChecker = createPingCheckerThread();
         pingChecker.start();
 
         Runtime.getRuntime().addShutdownHook(new Thread(this::closeServer));
@@ -43,12 +45,20 @@ public class Server {
         try {
             ServerSocket listener = new ServerSocket(port);
             while(running.get()) {
-                pool.execute(new ThreadHandler(listener.accept(), clientID++, clients));
+                synchronized (nextClientID) {
+                    pool.execute(new ThreadHandler(listener.accept(), nextClientID.get(), clients));
+                    nextClientID.set(nextClientID.get() + 1);
+                }
             }
         } catch (Exception e) {
             System.out.println("Server exception");
             closeServer();
         }
+    }
+
+    private Thread createPingCheckerThread() {
+        LastPingChecker lastPingChecker = new LastPingChecker(clients, running);
+        return new Thread(lastPingChecker);
     }
 
     private void closeServer() {

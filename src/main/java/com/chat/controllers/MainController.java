@@ -17,16 +17,25 @@ import javafx.scene.input.MouseEvent;
 public class MainController {
 
     private Client client;
+    private double x = 0;
+    private double y = 0;
 
     @FXML
     private VBox mainInclude;
     @FXML
     private HBox menuBar;
-    private double x = 0;
-    private double y = 0;
 
     private final FXMLLoader loginLoader = ClientWindow.loadFXML("fxml/login");
     private final FXMLLoader chatLoader = ClientWindow.loadFXML("fxml/chat");
+
+    @FXML
+    public void initialize() throws IOException {
+        mainInclude.getChildren().add(loginLoader.load());
+        LoginController loginController = loginLoader.getController();
+        loginController.setParentController(this);
+
+        this.client = new Client("localhost", 58395, this);
+    }
 
     @FXML
     public void switchToChat() throws IOException {
@@ -40,7 +49,7 @@ public class MainController {
     @FXML
     public void closeProgram() {
         client.setRunning(false);
-        client.closeThreads();
+        client.interruptThreads();
         Platform.exit();
     }
 
@@ -61,19 +70,6 @@ public class MainController {
     void onPressed(MouseEvent e) {
         x = e.getSceneX();
         y = e.getSceneY();
-    }
-
-    @FXML
-    public void initialize() throws IOException {
-        mainInclude.getChildren().add(loginLoader.load());
-        LoginController loginController = loginLoader.getController();
-        loginController.setParentController(this);
-
-        this.client = new Client("localhost", 58395, this);
-    }
-
-    public LoginController getLoginControler() {
-        return loginLoader.getController();
     }
 
     public ChatController getChatController() {

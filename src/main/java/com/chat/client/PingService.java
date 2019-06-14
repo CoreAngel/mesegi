@@ -12,6 +12,8 @@ public class PingService implements Runnable {
     private ObjectOutputStream outputStream;
     private AtomicBoolean running;
 
+    private final long SECOUND_TO_WAIT = 18;
+
     public PingService(ObjectOutputStream inputStream, AtomicBoolean running) {
         this.outputStream = inputStream;
         this.running = running;
@@ -21,17 +23,12 @@ public class PingService implements Runnable {
     public void run() {
         while (running.get()) {
             try {
-                Ping ping = new Ping();
-                outputStream.writeObject(ping);
-                System.out.println("ping");
-                Thread.sleep(18000);
-            } catch (InterruptedException e) {
+                sendPing();
+                waitToSendNextPing();
+            } catch (InterruptedException | SocketException e) {
                 closeStream();
                 return;
-            } catch (SocketException e) {
-                closeStream();
-            }
-            catch (IOException e) {
+            } catch (IOException e) {
                 //ignore
             }
         }
@@ -44,5 +41,14 @@ public class PingService implements Runnable {
         } catch (Exception ex){
             //ignore
         }
+    }
+
+    private void sendPing() throws IOException {
+        Ping ping = new Ping();
+        outputStream.writeObject(ping);
+    }
+
+    private void waitToSendNextPing() throws InterruptedException {
+        Thread.sleep(SECOUND_TO_WAIT * 1000);
     }
 }

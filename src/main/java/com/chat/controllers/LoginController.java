@@ -10,15 +10,19 @@ import javafx.scene.input.KeyEvent;
 
 public class LoginController {
 
-    @FXML
-    private TextField nameField;
-
     private final SimpleStringProperty stringProperty = new SimpleStringProperty();
     private MainController parentController;
 
     @FXML
+    private TextField nameField;
+
+    @FXML
     public void initialize() {
         nameField.textProperty().bindBidirectional(stringProperty);
+    }
+
+    public void setParentController(MainController parentController) {
+        this.parentController = parentController;
     }
 
     @FXML
@@ -37,11 +41,7 @@ public class LoginController {
 
     private void sendNewClient() {
         NewClient newClient = new NewClient(stringProperty.getValue());
-        parentController.getClient().send(newClient);
-    }
-
-    public void setParentController(MainController parentController) {
-        this.parentController = parentController;
+        parentController.getClient().trySendMessage(newClient);
     }
 
     private boolean checkName(String name) {

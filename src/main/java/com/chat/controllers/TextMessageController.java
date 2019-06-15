@@ -70,7 +70,7 @@ public class TextMessageController {
         dateProperty.setValue(time);
     }
 
-    private String getTimeFromDate() {
+    public String getTimeFromDate() {
         SimpleDateFormat localDateFormat = new SimpleDateFormat("HH:mm:ss");
         return localDateFormat.format(date);
 

@@ -130,4 +130,8 @@ public class ChatController {
 
         });
     }
+
+    public TreeMap<Long, String> getUsers() {
+        return users;
+    }
 }

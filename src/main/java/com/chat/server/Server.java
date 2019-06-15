@@ -56,7 +56,7 @@ public class Server {
         }
     }
 
-    private Thread createPingCheckerThread() {
+    public Thread createPingCheckerThread() {
         LastPingChecker lastPingChecker = new LastPingChecker(clients, running);
         return new Thread(lastPingChecker);
     }

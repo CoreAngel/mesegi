@@ -43,7 +43,6 @@ public class Client {
 
             Runtime.getRuntime().addShutdownHook(new Thread(controller::closeProgram));
         } catch (Exception e) {
-            System.out.println("Client error");
             mainController.closeProgram();
             e.printStackTrace();
         }
@@ -69,7 +68,6 @@ public class Client {
                 error = false;
                 break;
             } catch (IOException e) {
-                System.out.println("Error in trySendMessage method");
                 e.printStackTrace();
             }
         }

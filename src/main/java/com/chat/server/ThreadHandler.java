@@ -1,6 +1,9 @@
 package com.chat.server;
 
 import com.chat.message.NetMessage;
+import com.chat.message.factory.EnterUserFactory;
+import com.chat.message.factory.NewUserFactory;
+import com.chat.message.factory.UserLeftFactory;
 import com.chat.message.type.*;
 
 import java.io.IOException;
@@ -75,10 +78,10 @@ public class ThreadHandler implements Runnable {
             for (ClientInfo clientInfo : clients) {
                 list.put(clientInfo.getID(), clientInfo.getName());
             }
-            EnterNewUser enterNewUser = new EnterNewUser(client.getName(), client.getID(), list);
-            trySendMessage(client, enterNewUser);
+            EnterUser enterUser = EnterUserFactory.create(client.getName(), client.getID(), list);
+            trySendMessage(client, enterUser);
 
-            NewUser user = new NewUser(client.getName(), client.getID());
+            NewUser user = NewUserFactory.create(client.getName(), client.getID());
             broadcastMessage(user);
 
             clients.add(client);
@@ -112,7 +115,7 @@ public class ThreadHandler implements Runnable {
         if (client != null) {
             clients.remove(client);
 
-            UserLeft message = new UserLeft(client.getID());
+            UserLeft message = UserLeftFactory.create(client.getID());
             try {
                 for (ClientInfo clientInfo : clients) {
                     clientInfo.getOutputStream().writeObject(message);

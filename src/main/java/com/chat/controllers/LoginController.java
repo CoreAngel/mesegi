@@ -1,5 +1,6 @@
 package com.chat.controllers;
 
+import com.chat.message.factory.NewClientFactory;
 import com.chat.message.type.NewClient;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
@@ -40,7 +41,7 @@ public class LoginController {
     }
 
     private void sendNewClient() {
-        NewClient newClient = new NewClient(stringProperty.getValue());
+        NewClient newClient = NewClientFactory.create(stringProperty.getValue());
         parentController.getClient().trySendMessage(newClient);
     }
 

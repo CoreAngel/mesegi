@@ -2,6 +2,7 @@ package com.chat.controllers;
 
 import com.chat.client.Client;
 import com.chat.client.ClientWindow;
+import com.chat.message.factory.TextMessageFactory;
 import com.chat.message.type.TextMessage;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
@@ -114,7 +115,7 @@ public class ChatController {
     }
 
     private void sendTextMessage() {
-        TextMessage msg = new TextMessage(name, id, stringProperty.getValue());
+        TextMessage msg = TextMessageFactory.create(name, id, stringProperty.getValue());
         client.trySendMessage(msg);
         stringProperty.setValue("");
     }

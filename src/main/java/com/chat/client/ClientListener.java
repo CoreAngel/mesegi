@@ -1,5 +1,6 @@
 package com.chat.client;
 
+import com.chat.client.router.MessageRouter;
 import com.chat.controllers.MainController;
 import com.chat.message.NetMessage;
 
@@ -25,19 +26,12 @@ public class ClientListener implements Runnable {
     public void run() {
         while (running.get()) {
             try {
-                System.out.println("listener " + running.get());
                 NetMessage msg = (NetMessage) inputStream.readObject();
                 MessageRouter.router(msg, controller);
-            } catch (InterruptedIOException e) {
-                System.out.println("ClientListener: InterruptedIOException");
-                closeStream();
-                return;
-            } catch (SocketException e) {
-                System.out.println("ClientListener: Socket");
+            } catch (InterruptedIOException | SocketException e) {
                 closeStream();
                 return;
             } catch (IOException e) {
-                System.out.println("ClientListener: IOException");
                 closeStream();
                 controller.closeProgram();
             } catch (ClassNotFoundException e) {

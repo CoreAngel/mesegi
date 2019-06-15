@@ -1,5 +1,6 @@
 package com.chat.client;
 
+import com.chat.message.factory.PingFactory;
 import com.chat.message.type.Ping;
 
 import java.io.IOException;
@@ -44,7 +45,7 @@ public class PingService implements Runnable {
     }
 
     private void sendPing() throws IOException {
-        Ping ping = new Ping();
+        Ping ping = PingFactory.create();
         outputStream.writeObject(ping);
     }
 

@@ -38,12 +38,16 @@ public class MainController {
     }
 
     @FXML
-    public void switchToChat() throws IOException {
-        Platform.runLater(() -> mainInclude.getChildren().clear());
-        BorderPane borderPane = chatLoader.load();
-        Platform.runLater(() -> mainInclude.getChildren().add(borderPane));
-        ((ChatController)chatLoader.getController()).setClient(client);
-        ClientWindow.setSize(borderPane.getPrefWidth(), borderPane.getPrefHeight() + menuBar.getHeight());
+    public void switchToChat() {
+        try {
+            Platform.runLater(() -> mainInclude.getChildren().clear());
+            BorderPane borderPane = chatLoader.load();
+            Platform.runLater(() -> mainInclude.getChildren().add(borderPane));
+            ((ChatController) chatLoader.getController()).setClient(client);
+            ClientWindow.setSize(borderPane.getPrefWidth(), borderPane.getPrefHeight() + menuBar.getHeight());
+        } catch (IOException e) {
+            closeProgram();
+        }
     }
 
     @FXML

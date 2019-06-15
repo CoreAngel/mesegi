@@ -1,11 +1,14 @@
 package com.chat.message.type;
 
-public class NewUser extends NewClient {
+import com.chat.message.NetMessage;
 
+public class NewUser extends NetMessage {
+
+    private String name;
     private long id;
 
     public NewUser(String name, long id) {
-        super(name);
+        this.name = name;
         this.id = id;
     }
 
@@ -13,4 +16,7 @@ public class NewUser extends NewClient {
         return id;
     }
 
+    public String getName() {
+        return name;
+    }
 }

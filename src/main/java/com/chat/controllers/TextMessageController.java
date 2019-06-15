@@ -98,9 +98,9 @@ public class TextMessageController {
             VBox.setMargin(textFlowDate, new Insets(5, 0, 0, 20));
         }
     }
-}
 
-enum MsgType {
-    OUR,
-    SOMEONE
+    private enum MsgType {
+        OUR,
+        SOMEONE
+    }
 }

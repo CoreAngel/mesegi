@@ -8,6 +8,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 
 import javafx.scene.input.KeyEvent;
+import javafx.scene.text.Text;
 
 public class LoginController {
 
@@ -16,10 +17,13 @@ public class LoginController {
 
     @FXML
     private TextField nameField;
+    @FXML
+    private Text errorMessage;
 
     @FXML
     public void initialize() {
         nameField.textProperty().bindBidirectional(stringProperty);
+        errorMessage.setVisible(false);
     }
 
     public void setParentController(MainController parentController) {
@@ -30,13 +34,20 @@ public class LoginController {
     public void onEnterName() {
         if (checkName(stringProperty.getValue())) {
             sendNewClient();
+        } else {
+            errorMessage.setVisible(true);
         }
     }
 
     @FXML
     public void onEnterPressed(KeyEvent e) {
-        if (e.getCode() == KeyCode.ENTER && checkName(stringProperty.getValue())) {
-            sendNewClient();
+        if (e.getCode() == KeyCode.ENTER) {
+            if (checkName(stringProperty.getValue())) {
+                sendNewClient();
+            } else {
+                errorMessage.setVisible(true);
+            }
+
         }
     }
 

@@ -115,7 +115,9 @@ public class ChatController {
     }
 
     private void sendTextMessage() {
-        TextMessage msg = TextMessageFactory.create(name, id, stringProperty.getValue());
+        String text = stringProperty.getValue();
+        String textMsg = text.substring(0, Math.min(text.length(), 2000));
+        TextMessage msg = TextMessageFactory.create(name, id, textMsg);
         client.trySendMessage(msg);
         stringProperty.setValue("");
     }

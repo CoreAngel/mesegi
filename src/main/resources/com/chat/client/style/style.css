@@ -34,6 +34,10 @@
     -fx-prompt-text-fill: rgba(255, 255,255, 0.4);
 }
 
+.login-page--error {
+    -fx-fill: red;
+}
+
 .login-page--button {
     -fx-border-radius: 0;
     -fx-background-color: #524A7B;
